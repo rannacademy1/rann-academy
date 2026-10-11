@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RANN ACADEMY</title>
+    
+    <!-- Styling & Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkblue: '#0B1E36',
+                        darkerblue: '#020B18',
+                        gold: '#D4AF37',
+                        brightgold: '#FFD700',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0B1E36;
+            color: #D4AF37;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Light Mode Styles */
+        body.light-mode {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        body.light-mode header,
+        body.light-mode #side-drawer,
+        body.light-mode .bg-darkerblue,
+        body.light-mode .bg-darkblue {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border-color: #cbd5e1 !important;
+        }
+        body.light-mode header button,
+        body.light-mode header a,
+        body.light-mode header i {
+            color: #0f172a !important;
+        }
+        body.light-mode .golden-card-outline {
+            background: #ffffff !important;
+            border-color: #d4af37 !important;
+            color: #0f172a !important;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+        }
+        body.light-mode .golden-card-outline:hover {
+            background: #d4af37 !important;
+            color: #0b1e36 !important;
+        }
+        body.light-mode .gold-input {
+            background-color: #f1f5f9 !important;
+            border-color: #d4af37 !important;
+            color: #0f172a !important;
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: inherit; }
+        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 5px; }
+
+        /* Custom Viewer Scrollbar */
+        #viewer-container::-webkit-scrollbar { width: 14px; }
+        #viewer-container::-webkit-scrollbar-track { background: rgba(2, 11, 24, 0.95); border-left: 1px solid rgba(212, 175, 55, 0.3); }
+        #viewer-container::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 7px; border: 3px solid #020B18; }
+
+        .golden-card-outline {
+            background: rgba(11, 30, 54, 0.9);
+            border: 2px solid #D4AF37;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .golden-card-outline:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+            background: #D4AF37;
+            color: #0B1E36;
+        }
+        .golden-card-outline:hover .text-brightgold,
+        .golden-card-outline:hover .text-gold {
+            color: #0B1E36 !important;
+        }
+
+        .btn-gold {
+            background-color: #D4AF37;
+            color: #0B1E36;
+            border: 2px solid #D4AF37;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        .btn-gold:hover {
+            background-color: transparent;
+            color: #FFD700;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            border-color: #FFD700;
+        }
+
+        .gold-input {
+            background-color: rgba(11, 30, 54, 0.6);
+            border: 1px solid #D4AF37;
+            color: #D4AF37;
+            transition: all 0.3s ease;
+        }
+        .gold-input:focus {
+            outline: none;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+            border-color: #FFD700;
+        }
+
+        .section-fade {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatAnim {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .floating-logo {
+            animation: floatAnim 4s ease-in-out infinite;
+        }
+
+        /* Liquid Circle Navigation Bar Animation Styles */
+        .bottom-nav-container {
+            position: relative;
+        }
+        #nav-liquid-pill {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 44px;
+            background-color: #D4AF37;
+            border-radius: 9999px;
+            transition: all 0.45s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 1;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        .liquid-stretch {
+            animation: stretchMorph 0.35s ease;
+        }
+        @keyframes stretchMorph {
+            0% { transform: translateY(-50%) scaleX(1); }
+            50% { transform: translateY(-50%) scaleX(1.2) scaleY(0.85); }
+            100% { transform: translateY(-50%) scaleX(1); }
+        }
+        .bottom-nav-btn {
+            position: relative;
+            z-index: 2;
+            color: #D4AF37;
+            background: transparent;
+            border: none;
+            transition: color 0.3s ease;
+        }
+        .bottom-nav-btn.active {
+            color: #0B1E36;
+        }
+
+        /* A4 Aspect Ratio Container (1 : 1.414) */
+        .a4-card {
+            aspect-ratio: 1 / 1.414;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Header Navigation Layout -->
+    <header class="fixed w-full top-0 z-50 bg-darkblue border-b border-gold shadow-[0_4px_20px_rgba(212,175,55,0.2)] transition-colors duration-300">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center relative">
+            
+            <!-- Left: Menu Button -->
+            <button onclick="toggleSideDrawer()" class="text-gold text-2xl hover:text-brightgold transition-transform hover:scale-110 p-2">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Center: Logo -->
+            <div class="absolute left-1/2 transform -translate-x-1/2">
+                <button onclick="showSection('section-home'); setActiveBottomNav('home');" class="text-lg md:text-2xl font-bold tracking-wider text-gold hover:text-brightgold transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap"></i> RANN ACADEMY
+                </button>
+            </div>
+
+            <!-- Right: Bookmarks & Search -->
+            <nav class="flex items-center gap-4 md:gap-6">
+                <button onclick="showFavoritesSection()" class="text-sm md:text-lg font-semibold hover:text-brightgold transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-bookmark text-gold text-xl"></i>
+                </button>
+                <button onclick="openSearchModal()" class="text-sm md:text-lg font-semibold hover:text-brightgold transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-search text-xl"></i>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Notice Board Ticker -->
+        <div id="notice-banner" class="bg-gold text-darkblue py-1.5 px-4 text-xs md:text-sm font-bold flex items-center justify-between border-t border-darkblue/20">
+            <div class="flex items-center gap-2 overflow-hidden whitespace-nowrap w-full">
+                <i class="fa-solid fa-bullhorn animate-bounce"></i>
+                <marquee id="notice-text" scrollamount="5" class="w-full">Welcome to Rann Academy! Select your category to start learning.</marquee>
+            </div>
+        </div>
+    </header>
+
+    <!-- Side Drawer Menu -->
+    <div id="side-drawer" class="fixed inset-y-0 left-0 w-80 bg-darkerblue border-r border-gold shadow-2xl z-[120] transform -translate-x-full transition-transform duration-300 ease-in-out p-6 flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-center mb-6 pb-3 border-b border-gold/30">
+                <h3 class="text-xl font-bold text-gold uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-bars"></i> Menu</h3>
+                <button onclick="toggleSideDrawer()" class="text-red-400 hover:text-red-500 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="mb-5">
+                <input type="text" id="drawer-search-input" oninput="handleDrawerSearch()" class="w-full gold-input rounded-lg px-3 py-2 text-sm" placeholder="Search resources...">
+            </div>
+
+            <div class="space-y-3">
+                <!-- PDFs & Videos Quick Access at the Top -->
+                <button onclick="toggleSideDrawer(); showGradesSection('pdf'); setActiveBottomNav('pdf');" class="w-full text-left py-2.5 px-4 rounded-lg bg-gold text-darkblue hover:bg-brightgold transition-all flex items-center gap-3 font-bold shadow-md">
+                    <i class="fa-solid fa-file-pdf"></i> PDFs
+                </button>
+                <button onclick="toggleSideDrawer(); showGradesSection('video'); setActiveBottomNav('video');" class="w-full text-left py-2.5 px-4 rounded-lg bg-gold text-darkblue hover:bg-brightgold transition-all flex items-center gap-3 font-bold shadow-md">
+                    <i class="fa-solid fa-video"></i> Videos
+                </button>
+
+                <button onclick="toggleSideDrawer(); showFavoritesSection();" class="w-full text-left py-2.5 px-4 rounded-lg bg-darkblue border border-gold/40 hover:bg-gold hover:text-darkblue transition-all flex items-center gap-3 font-semibold">
+                    <i class="fa-solid fa-bookmark text-gold"></i> Bookmarks
+                </button>
+
+                <button onclick="toggleSideDrawer(); handleAdminNavClick();" class="w-full text-left py-2.5 px-4 rounded-lg bg-darkblue border border-gold/40 hover:bg-gold hover:text-darkblue transition-all flex items-center gap-3 font-semibold">
+                    <i class="fa-solid fa-user-shield text-gold"></i> Admin Portal
+                </button>
+
+                <button onclick="toggleSideDrawer(); openSupportModal();" class="w-full text-left py-2.5 px-4 rounded-lg bg-darkblue border border-gold/40 hover:bg-gold hover:text-darkblue transition-all flex items-center gap-3 font-semibold">
+                    <i class="fa-solid fa-headset text-gold"></i> Support
+                </button>
+
+                <!-- Light Mode Toggle -->
+                <div class="w-full py-2.5 px-4 rounded-lg bg-darkblue border border-gold/40 flex items-center justify-between font-semibold">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-sun text-gold"></i> Light Mode</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="light-mode-toggle" onchange="toggleLightMode()" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gold"></div>
+                    </label>
+                </div>
+
+                <button onclick="toggleSideDrawer(); openAboutModal();" class="w-full text-left py-2.5 px-4 rounded-lg bg-darkblue border border-gold/40 hover:bg-gold hover:text-darkblue transition-all flex items-center gap-3 font-semibold">
+                    <i class="fa-solid fa-circle-info text-gold"></i> About
+                </button>
+            </div>
+        </div>
+
+        <div class="text-center text-xs text-gold/60 pt-4 border-t border-gold/20">
+            © 2026 Rann Academy. All rights reserved.
+        </div>
+    </div>
+    <div id="drawer-backdrop" onclick="toggleSideDrawer()" class="hidden fixed inset-0 bg-black/70 z-[115] backdrop-blur-sm"></div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow pt-36 pb-28 px-4 container mx-auto flex flex-col justify-center min-h-screen">
+        
+        <!-- Home Section -->
+        <section id="section-home" class="flex flex-col items-center justify-center w-full section-fade py-6">
+            <div class="w-full max-w-4xl h-[48vh] bg-darkerblue border-2 border-gold rounded-3xl shadow-[0_0_50px_rgba(212,175,55,0.25)] flex flex-col items-center justify-center p-8 text-center relative overflow-hidden">
+                <i class="fa-solid fa-graduation-cap text-6xl md:text-8xl text-gold mb-6 floating-logo"></i>
+                <h1 class="text-3xl md:text-6xl font-extrabold tracking-widest uppercase text-gold mb-4 drop-shadow-md">RANN ACADEMY</h1>
+                <p class="text-sm md:text-xl tracking-widest text-gold/80 uppercase font-semibold">Global Cloud Learning Platform</p>
+            </div>
+            <div class="mt-8 text-center text-xs md:text-sm text-gold/70 font-semibold tracking-wider">
+                © 2026 Rann Academy. All rights reserved.
+            </div>
+        </section>
+
+        <!-- Grades Section -->
+        <section id="section-grades" class="hidden flex-col justify-center section-fade w-full max-w-6xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 id="grade-section-title" class="text-3xl md:text-4xl font-bold uppercase tracking-wider text-gold">Select Category</h2>
+            </div>
+            <div id="grades-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 w-full">
+            </div>
+        </section>
+
+        <!-- Years Section -->
+        <section id="section-years" class="hidden flex-col justify-center section-fade w-full max-w-5xl mx-auto">
+            <button onclick="handleBackFromYears()" class="self-start mb-6 text-gold hover:underline flex items-center gap-2 font-semibold">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+            <div class="text-center mb-10">
+                <h2 id="year-section-title" class="text-3xl md:text-4xl font-bold uppercase tracking-wider text-gold">Select Year</h2>
+            </div>
+            <div id="years-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-4xl mx-auto">
+            </div>
+        </section>
+
+        <!-- Subjects / A4 Cover Grid Section -->
+        <section id="section-subjects" class="hidden flex-col justify-center section-fade w-full max-w-5xl mx-auto">
+            <button onclick="handleBackToPreviousFromSubjects()" class="self-start mb-6 text-gold hover:underline flex items-center gap-2 font-semibold">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+            <div class="text-center mb-10">
+                <h2 id="subject-section-title" class="text-3xl md:text-4xl font-bold uppercase tracking-wider text-gold">Select Subject</h2>
+            </div>
+            <div id="subjects-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-5xl mx-auto">
+                <!-- Dynamically populated with A4 cover cards -->
+            </div>
+        </section>
+
+        <!-- Content Display Section -->
+        <section id="section-content" class="hidden flex-col justify-center section-fade w-full max-w-5xl mx-auto">
+            <button onclick="handleBackFromContent()" class="self-start mb-6 text-gold hover:underline flex items-center gap-2 font-semibold">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+            <h2 id="content-display-title" class="text-2xl md:text-3xl font-bold mb-8 uppercase text-gold">Available Content</h2>
+            <div id="content-list" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+            </div>
+        </section>
+
+        <!-- EMBEDDED VIEWER SECTION -->
+        <section id="section-viewer" class="hidden flex-col justify-center section-fade w-full max-w-5xl mx-auto">
+            <div class="flex justify-between items-center mb-4">
+                <button onclick="handleBackFromViewer()" class="text-gold hover:underline flex items-center gap-2 font-semibold">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </button>
+            </div>
+            
+            <div class="bg-darkerblue border-2 border-gold rounded-2xl p-4 md:p-6 shadow-[0_0_30px_rgba(212,175,55,0.2)]">
+                <div class="mb-3">
+                    <h2 id="viewer-title" class="text-xl md:text-2xl font-bold text-gold uppercase">Document Title</h2>
+                    <p id="viewer-subtitle" class="text-xs md:text-sm text-gold/70 mt-1">Grade / Subject</p>
+                </div>
+                <div id="viewer-container" class="w-full h-[72vh] bg-black rounded-xl overflow-hidden border border-gold/40 relative flex items-center justify-center">
+                    
+                    <a id="viewer-download-btn" href="#" target="_blank" download class="absolute top-3 right-3 z-20 bg-darkblue/90 hover:bg-gold text-gold hover:text-darkblue p-2.5 rounded-full border border-gold shadow-lg transition-all flex items-center justify-center text-sm" title="Download File">
+                        <i class="fa-solid fa-download"></i>
+                    </a>
+
+                    <button onclick="toggleFullScreen()" class="absolute bottom-3 right-3 z-20 bg-darkblue/90 hover:bg-gold text-gold hover:text-darkblue p-2.5 rounded-full border border-gold shadow-lg transition-all flex items-center justify-center text-sm" title="Fullscreen">
+                        <i class="fa-solid fa-expand"></i>
+                    </button>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Bookmarks Section -->
+        <section id="section-favorites" class="hidden flex-col justify-center section-fade w-full max-w-5xl mx-auto">
+            <button onclick="showSection('section-home'); setActiveBottomNav('home');" class="self-start mb-6 text-gold hover:underline flex items-center gap-2 font-semibold">
+                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            </button>
+            <h2 class="text-3xl font-bold mb-8 uppercase text-gold"><i class="fa-solid fa-bookmark mr-2 text-gold"></i> Bookmarked Materials</h2>
+            <div id="favorites-list" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+            </div>
+        </section>
+
+        <!-- Admin Login Section -->
+        <section id="section-admin-login" class="hidden flex-col justify-center section-fade w-full">
+            <div class="max-w-md mx-auto w-full bg-darkerblue border border-gold rounded-2xl p-8 shadow-[0_0_30px_rgba(212,175,55,0.2)] text-center">
+                <button onclick="showSection('section-home'); setActiveBottomNav('home');" class="self-start mb-4 text-gold hover:underline flex items-center gap-2 text-sm font-semibold">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Home
+                </button>
+                <i class="fa-solid fa-user-shield text-4xl text-gold mb-4"></i>
+                <h3 class="text-2xl font-bold mb-6 text-gold uppercase tracking-wide">Team Admin Login</h3>
+                <form id="admin-login-form" class="space-y-4">
+                    <div>
+                        <input type="email" id="admin-email-input" class="w-full gold-input rounded-lg px-4 py-3 text-center text-sm" placeholder="Admin Email" required>
+                    </div>
+                    <div>
+                        <input type="password" id="admin-pass-input" class="w-full gold-input rounded-lg px-4 py-3 text-center text-sm" placeholder="Password" required>
+                    </div>
+                    <button type="submit" id="login-btn" class="btn-gold w-full py-3 rounded-lg uppercase">
+                        Login
+                    </button>
+                    <p id="login-error" class="text-red-400 font-semibold text-sm hidden"></p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Admin Dashboard Section -->
+        <section id="section-admin-dashboard" class="hidden flex-col justify-center section-fade w-full">
+            <div class="max-w-4xl mx-auto w-full">
+                
+                <div class="flex justify-between items-center mb-6">
+                    <button onclick="showSection('section-home'); setActiveBottomNav('home');" class="text-gold hover:underline flex items-center gap-2 text-sm font-semibold">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Home
+                    </button>
+                    <button onclick="logoutAdmin()" class="text-xs text-gold/70 hover:text-brightgold uppercase border border-gold/40 px-3 py-2 rounded font-semibold">Logout</button>
+                </div>
+
+                <div class="bg-darkerblue border border-gold rounded-2xl p-6 shadow-[0_0_30px_rgba(212,175,55,0.2)] mb-8">
+                    <h3 class="text-xl font-bold text-gold uppercase tracking-wide mb-4">Update Notice Board Banner</h3>
+                    <form id="notice-form" class="flex gap-4">
+                        <input type="text" id="admin-notice-input" class="flex-grow gold-input rounded-lg px-4 py-2 text-sm" placeholder="Enter announcement text..." required>
+                        <button type="submit" class="btn-gold px-6 py-2 rounded-lg text-sm uppercase">Update Banner</button>
+                    </form>
+                </div>
+
+                <div class="bg-darkerblue border border-gold rounded-2xl p-8 shadow-[0_0_30px_rgba(212,175,55,0.2)] mb-8">
+                    <h3 class="text-2xl font-bold text-gold uppercase tracking-wide mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up text-gold"></i> Publish Resource
+                    </h3>
+                    <form id="admin-form" class="space-y-6">
+                        <div>
+                            <label class="block font-semibold mb-2 text-gold">Title / Topic Name</label>
+                            <input type="text" id="admin-title" class="w-full gold-input rounded-lg px-4 py-3" placeholder="e.g. Maths Grade 11 Textbook" required>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block font-semibold mb-2 text-gold">Type</label>
+                                <select id="admin-type" class="w-full gold-input rounded-lg px-4 py-3" required>
+                                    <option value="pdf">PDF</option>
+                                    <option value="video">Video</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-2 text-gold">Category / Grade</label>
+                                <select id="admin-grade" onchange="toggleAdminGradeOptions()" class="w-full gold-input rounded-lg px-4 py-3" required>
+                                    <option value="Grade 9">Grade 9</option>
+                                    <option value="Grade 10">Grade 10</option>
+                                    <option value="Grade 11">Grade 11</option>
+                                    <option value="Grade 12">Grade 12</option>
+                                    <option value="EUEE">EUEE</option>
+                                    <option value="Pilot test">Pilot test</option>
+                                    <option value="Extreme book series">Extreme book series</option>
+                                    <option value="Model exams">Model exams</option>
+                                </select>
+                            </div>
+                            <div id="admin-year-wrapper" class="hidden">
+                                <label class="block font-semibold mb-2 text-gold">Year</label>
+                                <select id="admin-year" class="w-full gold-input rounded-lg px-4 py-3">
+                                    <option value="2016">2016</option>
+                                    <option value="2017">2017</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-2 text-gold">Subject</label>
+                                <select id="admin-subject" class="w-full gold-input rounded-lg px-4 py-3" required>
+                                    <option value="Maths">Maths</option>
+                                    <option value="Physics">Physics</option>
+                                    <option value="Chemistry">Chemistry</option>
+                                    <option value="Biology">Biology</option>
+                                    <option value="English">English</option>
+                                    <option value="SAT">SAT</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold mb-2 text-gold">File Link (Public URL)</label>
+                            <input type="url" id="admin-file-url" class="w-full gold-input rounded-lg px-4 py-3" placeholder="https://..." required>
+                        </div>
+
+                        <button type="submit" id="upload-btn" class="btn-gold w-full py-3 rounded-lg uppercase">
+                            Publish Resource
+                        </button>
+                    </form>
+                </div>
+
+                <div class="bg-darkerblue border border-gold/50 rounded-2xl p-8 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+                    <h3 class="text-xl font-bold text-gold uppercase tracking-wide mb-6">Manage & Delete Content</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-gold/30 text-gold/80">
+                                    <th class="py-3 px-4">Title</th>
+                                    <th class="py-3 px-4">Category/Grade</th>
+                                    <th class="py-3 px-4">Subject</th>
+                                    <th class="py-3 px-4 text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-manage-list">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- FIXED BOTTOM NAVIGATION BAR WITH LIQUID SLIDING INDICATOR -->
+    <nav class="fixed bottom-0 left-0 w-full bg-darkblue border-t-2 border-gold shadow-[0_-5px_25px_rgba(212,175,55,0.2)] z-40 py-3 px-6 flex justify-around items-center rounded-t-3xl bottom-nav-container transition-colors duration-300">
+        <!-- Liquid sliding pill indicator -->
+        <div id="nav-liquid-pill"></div>
+
+        <button id="bottom-nav-pdf" onclick="showGradesSection('pdf'); setActiveBottomNav('pdf');" class="bottom-nav-btn px-6 py-2.5 rounded-2xl font-bold uppercase tracking-wider flex items-center gap-2 text-sm md:text-base">
+            <i class="fa-solid fa-file-pdf"></i> PDF
+        </button>
+        <button id="bottom-nav-home" onclick="showSection('section-home'); setActiveBottomNav('home');" class="bottom-nav-btn active px-6 py-2.5 rounded-2xl font-bold uppercase tracking-wider flex items-center gap-2 text-sm md:text-base">
+            <i class="fa-solid fa-house"></i> Home
+        </button>
+        <button id="bottom-nav-video" onclick="showGradesSection('video'); setActiveBottomNav('video');" class="bottom-nav-btn px-6 py-2.5 rounded-2xl font-bold uppercase tracking-wider flex items-center gap-2 text-sm md:text-base">
+            <i class="fa-solid fa-video"></i> Video
+        </button>
+    </nav>
+
+    <!-- SUPPORT MODAL -->
+    <div id="support-modal" class="hidden fixed inset-0 z-[130] bg-black/80 flex flex-col justify-center items-center backdrop-blur-sm p-4">
+        <div class="w-full max-w-md bg-darkerblue border border-gold rounded-2xl p-6 text-center shadow-[0_0_40px_rgba(212,175,55,0.3)]">
+            <i class="fa-solid fa-headset text-4xl text-gold mb-3"></i>
+            <h3 class="text-2xl font-bold text-gold uppercase mb-2">Support & Assistance</h3>
+            <p class="text-gold/80 text-sm mb-6">If you need help or have queries, reach out to us directly:</p>
+            <div class="bg-darkblue border border-gold/40 p-4 rounded-xl mb-6">
+                <p class="text-xs text-gold/60 uppercase font-semibold mb-1">Official Email</p>
+                <a href="mailto:rannacademy3@gmail.com" class="text-brightgold text-lg font-bold hover:underline break-all">
+                    rannacademy3@gmail.com
+                </a>
+            </div>
+            <button onclick="closeSupportModal()" class="btn-gold w-full py-2.5 rounded-xl uppercase text-sm">Close</button>
+        </div>
+    </div>
+
+    <!-- ABOUT MODAL -->
+    <div id="about-modal" class="hidden fixed inset-0 z-[130] bg-black/80 flex flex-col justify-center items-center backdrop-blur-sm p-4">
+        <div class="w-full max-w-md bg-darkerblue border border-gold rounded-2xl p-6 text-center shadow-[0_0_40px_rgba(212,175,55,0.3)]">
+            <i class="fa-solid fa-circle-info text-4xl text-gold mb-3"></i>
+            <h3 class="text-2xl font-bold text-gold uppercase mb-2">About Rann Academy</h3>
+            <p class="text-gold/80 text-sm py-4">About section is currently empty.</p>
+            <button onclick="closeAboutModal()" class="btn-gold w-full py-2.5 rounded-xl uppercase text-sm">Close</button>
+        </div>
+    </div>
+
+    <!-- SEARCH MODAL -->
+    <div id="search-modal" class="hidden fixed inset-0 z-[130] bg-black/90 flex flex-col justify-center items-center backdrop-blur-sm p-4 md:p-10">
+        <div class="w-full max-w-3xl bg-darkerblue border border-gold rounded-2xl p-6 shadow-[0_0_40px_rgba(212,175,55,0.3)] flex flex-col max-h-[85vh]">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-gold/30">
+                <h3 class="text-xl font-bold text-gold uppercase">Global Search</h3>
+                <button onclick="closeSearchModal()" class="text-red-400 hover:text-red-500 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="mb-4">
+                <input type="text" id="search-input" oninput="handleGlobalSearch()" class="w-full gold-input rounded-lg px-4 py-3 text-lg" placeholder="Type topic, subject, or grade...">
+            </div>
+            <div id="search-results-list" class="flex-grow overflow-y-auto space-y-3 pr-2">
+                <p class="text-center text-gold/60 py-6">Type above to search all academy materials instantly.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK & App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-mtq4MWZaS5PU9870MdXup_G7bxoe_Dg",
+            authDomain: "rann-academy.firebaseapp.com",
+            projectId: "rann-academy",
+            storageBucket: "rann-academy.firebasestorage.app",
+            messagingSenderId: "649893018300",
+            appId: "1:649893018300:web:3d5a8d74933e45b81ceeb9",
+            measurementId: "G-SJNWVBE60B"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let globalContent = [];
+        
+        const defaultCovers = {
+            "Grade_9_Maths": "https://lh3.googleusercontent.com/d/1cVuwr_N01l75-QlFEHOIsYSW93YWtZm0",
+            "Grade_9_Physics": "https://lh3.googleusercontent.com/d/1SXFge4v15KPlDuYxr8GpA_LrD0ylImAY",
+            "Grade_9_Chemistry": "https://lh3.googleusercontent.com/d/1uzBYAIR86W-IDcY93dGIYDJmDZJapFKK",
+            "Grade_9_Biology": "https://lh3.googleusercontent.com/d/1wBtjeQq8H4l-TX9zfOYXv8Zzx9tjhs0h",
+            "Grade_10_Maths": "https://lh3.googleusercontent.com/d/10EZBa3nP0p4lgrxV0wCq6HRFGqjBs3Rs",
+            "Grade_10_Physics": "https://lh3.googleusercontent.com/d/1nVb9-E1NlB4UI23gN54BlAI6IsDAmSY0",
+            "Grade_10_Chemistry": "https://lh3.googleusercontent.com/d/1g4BrYMLWIWaox1e8rtm8GiVjpYgQ26Cb",
+            "Grade_10_Biology": "https://lh3.googleusercontent.com/d/1orpKzXWxzd3KKxvX6t0OZhqQ3MdYX13M",
+            "Grade_11_Maths": "https://lh3.googleusercontent.com/d/168lRcv77H0JT83nJGeadxRAfHK6T7hwM",
+            "Grade_11_Physics": "https://lh3.googleusercontent.com/d/1QgxFI4NpZRD_m1Y1oBKs1_ACl4qSB9Cx",
+            "Grade_11_Chemistry": "https://lh3.googleusercontent.com/d/1yHh13Rqy500Vmn1_-VuFDMWyzFnH4uOP",
+            "Grade_11_Biology": "https://lh3.googleusercontent.com/d/1rIESYGJrsIhdE_0fVdSKuJBYoMT1i1mp",
+            "Grade_12_Maths": "https://lh3.googleusercontent.com/d/1L4CfIoj-Nty2TNkofexG5vSi9yS2cdzO",
+            "Grade_12_Physics": "https://lh3.googleusercontent.com/d/1ze5_CaSjefWATc1eflQIVRmjX3SAoQj1",
+            "Grade_12_Chemistry": "https://lh3.googleusercontent.com/d/1YaBGbX-erg-reKtDR6JMqDHoB3D8UWnG",
+            "Grade_12_Biology": "https://lh3.googleusercontent.com/d/1kE8nwBRqP5Xl0Eyf_jrv1zdpAFbH5tqn"
+        };
+
+        let currentContentType = 'pdf'; 
+        let currentPdfCategory = '';
+        let currentTextBookStep = 'grades'; 
+        let selectedGrade = '';
+        let selectedYear = '';
+        let selectedSubject = '';
+        let currentUser = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => { setActiveBottomNav('home'); }, 100);
+        });
+
+        window.toggleSideDrawer = function() {
+            const drawer = document.getElementById('side-drawer');
+            const backdrop = document.getElementById('drawer-backdrop');
+            if (drawer.classList.contains('-translate-x-full')) {
+                drawer.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                drawer.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        };
+
+        window.toggleLightMode = function() {
+            document.body.classList.toggle('light-mode');
+        };
+
+        window.openSupportModal = function() { document.getElementById('support-modal').classList.remove('hidden'); };
+        window.closeSupportModal = function() { document.getElementById('support-modal').classList.add('hidden'); };
+
+        window.openAboutModal = function() { document.getElementById('about-modal').classList.remove('hidden'); };
+        window.closeAboutModal = function() { document.getElementById('about-modal').classList.add('hidden'); };
+
+        window.setActiveBottomNav = function(navType) {
+            ['pdf', 'home', 'video'].forEach(type => {
+                const btn = document.getElementById(`bottom-nav-${type}`);
+                if (btn) btn.classList.remove('active');
+            });
+            const activeBtn = document.getElementById(`bottom-nav-${navType}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                const pill = document.getElementById('nav-liquid-pill');
+                if (pill) {
+                    const parentRect = pill.parentElement.getBoundingClientRect();
+                    const btnRect = activeBtn.getBoundingClientRect();
+                    const left = btnRect.left - parentRect.left;
+                    const width = btnRect.width;
+                    
+                    pill.style.left = `${left}px`;
+                    pill.style.width = `${width}px`;
+
+                    pill.classList.remove('liquid-stretch');
+                    void pill.offsetWidth;
+                    pill.classList.add('liquid-stretch');
+                }
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                if (!document.getElementById('section-admin-dashboard').classList.contains('hidden')) {
+                    renderAdminManageList();
+                }
+            } else {
+                if (!document.getElementById('section-admin-dashboard').classList.contains('hidden')) {
+                    showSection('section-home');
+                }
+            }
+        });
+
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email-input').value.trim();
+            const pass = document.getElementById('admin-pass-input').value;
+            const errorMsg = document.getElementById('login-error');
+            const loginBtn = document.getElementById('login-btn');
+
+            loginBtn.disabled = true;
+            loginBtn.innerText = "Logging in...";
+            errorMsg.classList.add('hidden');
+
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Connection/Storage timeout.')), 10000)
+            );
+
+            try {
+                await Promise.race([
+                    signInWithEmailAndPassword(auth, email, pass),
+                    timeoutPromise
+                ]);
+
+                errorMsg.classList.add('hidden');
+                document.getElementById('admin-login-form').reset();
+                renderAdminManageList();
+                window.showSection('section-admin-dashboard');
+            } catch (err) {
+                console.error("Login Error:", err);
+                errorMsg.innerText = `❌ ${err.message || "Invalid email or password."}`;
+                errorMsg.classList.remove('hidden');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.innerText = "Login";
+            }
+        });
+
+        window.logoutAdmin = async function() {
+            try {
+                await signOut(auth);
+                window.showSection('section-home');
+                setActiveBottomNav('home');
+            } catch (err) {
+                console.error("Logout error:", err);
+            }
+        };
+
+        onSnapshot(collection(db, "rann_content"), (snapshot) => {
+            globalContent = [];
+            snapshot.forEach((firebaseDoc) => {
+                globalContent.push({ id: firebaseDoc.id, ...firebaseDoc.data() });
+            });
+            if (selectedGrade && selectedSubject && currentContentType === 'pdf') {
+                if (selectedGrade === 'Pilot test') {
+                    if (selectedYear) renderContentList();
+                } else {
+                    renderContentList();
+                }
+            } else if (selectedGrade && selectedSubject && currentContentType === 'video') {
+                renderContentList();
+            }
+            if (currentUser) renderAdminManageList();
+        });
+
+        onSnapshot(doc(db, "rann_settings", "notice"), (docSnap) => {
+            if (docSnap.exists()) {
+                document.getElementById('notice-text').innerText = docSnap.data().text;
+            }
+        });
+
+        document.getElementById('notice-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = document.getElementById('admin-notice-input').value;
+            try {
+                await setDoc(doc(db, "rann_settings", "notice"), { text });
+                alert("✅ Notice board updated successfully!");
+                document.getElementById('admin-notice-input').value = '';
+            } catch (err) {
+                alert("❌ Failed to update notice: " + err.message);
+            }
+        });
+
+        window.toggleFullScreen = function() {
+            const container = document.getElementById('viewer-container');
+            const target = container.querySelector('video') || container;
+            if (!document.fullscreenElement) {
+                if (target.requestFullscreen) target.requestFullscreen();
+                else if (target.webkitRequestFullscreen) target.webkitRequestFullscreen();
+                else if (target.msRequestFullscreen) target.msRequestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                else if (document.msExitFullscreen) document.msExitFullscreen();
+            }
+        };
+
+        window.openViewer = async function(item) {
+            document.getElementById('viewer-title').innerText = item.title;
+            let yrText = item.year ? ` (${item.year})` : '';
+            document.getElementById('viewer-subtitle').innerText = `${item.grade}${yrText} • ${item.subject} • ${item.type.toUpperCase()}`;
+            document.getElementById('viewer-download-btn').href = item.fileUrl;
+            
+            const container = document.getElementById('viewer-container');
+            const downloadBtn = container.querySelector('#viewer-download-btn');
+            const fsBtn = container.querySelector('button[title="Fullscreen"]');
+            container.innerHTML = '';
+            
+            if (item.type === 'pdf') {
+                container.appendChild(downloadBtn);
+                container.appendChild(fsBtn);
+            }
+
+            try {
+                if (item.id) {
+                    const docRef = doc(db, "rann_content", item.id);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        await updateDoc(docRef, { views: (docSnap.data().views || 0) + 1 });
+                    }
+                }
+            } catch (err) {
+                console.error("View count error:", err);
+            }
+
+            let embedUrl = item.fileUrl;
+            if (embedUrl.includes('drive.google.com')) {
+                embedUrl = embedUrl.replace('/view?usp=sharing', '/preview').replace('/view?usp=drivesdk', '/preview');
+            }
+
+            if (item.type === 'pdf' || (item.type === 'video' && embedUrl.includes('drive.google.com'))) {
+                const iframe = document.createElement('iframe');
+                iframe.src = embedUrl;
+                iframe.className = "w-full h-full border-none";
+                iframe.setAttribute('allow', 'fullscreen');
+                iframe.setAttribute('allowfullscreen', 'true');
+                iframe.setAttribute('webkitallowfullscreen', 'true');
+                iframe.setAttribute('mozallowfullscreen', 'true');
+                container.appendChild(iframe);
+            } else {
+                const video = document.createElement('video');
+                video.src = embedUrl;
+                video.controls = true;
+                video.autoplay = true;
+                video.className = "w-full h-full bg-black outline-none object-contain";
+                video.setAttribute('playsinline', 'true');
+                container.appendChild(video);
+            }
+
+            window.showSection('section-viewer');
+        };
+
+        window.handleBackFromViewer = function() {
+            if (currentContentType === 'pdf' && currentPdfCategory === 'Text Books') {
+                renderTextBookSubjectsSection();
+            } else {
+                window.showSection('section-content');
+            }
+        };
+
+        window.showSection = function(sectionId) {
+            ['section-home', 'section-grades', 'section-years', 'section-subjects', 'section-content', 'section-viewer', 'section-favorites', 'section-admin-login', 'section-admin-dashboard'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('flex');
+                }
+            });
+            const target = document.getElementById(sectionId);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('flex');
+            }
+        };
+
+        window.handleAdminNavClick = function() {
+            if (currentUser) {
+                renderAdminManageList();
+                window.showSection('section-admin-dashboard');
+            } else {
+                document.getElementById('admin-email-input').value = '';
+                document.getElementById('admin-pass-input').value = '';
+                document.getElementById('login-error').classList.add('hidden');
+                window.showSection('section-admin-login');
+            }
+        };
+
+        window.showGradesSection = function(type) {
+            currentContentType = type;
+            const grid = document.getElementById('grades-grid');
+            grid.innerHTML = '';
+            
+            if (type === 'pdf') {
+                document.getElementById('grade-section-title').innerText = `Select PDF Category`;
+                const pdfCategories = ['Text Books', 'Extreme book series', 'EUEE', 'Model exams', 'Pilot test'];
+                pdfCategories.forEach(cat => {
+                    const div = document.createElement('div');
+                    div.className = "golden-card-outline rounded-2xl p-8 flex items-center justify-center h-36 relative";
+                    let crownHTML = (cat === 'Pilot test') ? `<span class="absolute top-3 right-3 text-brightgold text-xl"><i class="fa-solid fa-crown"></i></span>` : '';
+                    div.innerHTML = `${crownHTML}<h3 class="text-2xl font-bold">${cat}</h3>`;
+                    div.onclick = () => selectCategory(cat);
+                    grid.appendChild(div);
+                });
+            } else {
+                currentPdfCategory = 'video';
+                document.getElementById('grade-section-title').innerText = `Select Grade`;
+                const videoGrades = ['Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
+                videoGrades.forEach(grade => {
+                    const div = document.createElement('div');
+                    div.className = "golden-card-outline rounded-2xl p-8 flex items-center justify-center h-36";
+                    div.innerHTML = `<h3 class="text-2xl font-bold">${grade}</h3>`;
+                    div.onclick = () => selectVideoGrade(grade);
+                    grid.appendChild(div);
+                });
+            }
+            window.showSection('section-grades');
+        };
+
+        window.selectCategory = function(cat) {
+            currentPdfCategory = cat;
+            if (cat === 'Text Books') {
+                currentTextBookStep = 'grades';
+                renderTextBookGradesSection();
+            } else if (cat === 'Extreme book series') {
+                renderExtremeBookSection();
+            } else if (cat === 'EUEE') {
+                selectedGrade = 'EUEE';
+                renderEUEESubjectsSection();
+            } else if (cat === 'Model exams') {
+                selectedGrade = 'Model exams';
+                renderModelExamSubjectsSection();
+            } else if (cat === 'Pilot test') {
+                selectedGrade = 'Pilot test';
+                renderPilotSubjectsSection();
+            }
+        };
+
+        window.renderTextBookGradesSection = function() {
+            currentTextBookStep = 'grades';
+            const subjectsGrid = document.getElementById('subjects-grid');
+            subjectsGrid.className = "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 w-full max-w-5xl mx-auto";
+            subjectsGrid.innerHTML = '';
+            document.getElementById('subject-section-title').innerText = `Text Books - Select Grade`;
+            
+            const textbookGrades = ['Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
+            textbookGrades.forEach(g => {
+                const div = document.createElement('div');
+                div.className = "golden-card-outline rounded-2xl p-8 flex items-center justify-center h-32";
+                div.innerHTML = `<h3 class="text-2xl font-bold">${g}</h3>`;
+                div.onclick = () => selectTextBookGrade(g);
+                subjectsGrid.appendChild(div);
+            });
+            window.showSection('section-subjects');
+        };
+
+        window.selectTextBookGrade = function(grade) {
+            selectedGrade = grade;
+            currentTextBookStep = 'subjects';
+            renderTextBookSubjectsSection();
+        };
+
+        window.renderTextBookSubjectsSection = function() {
+            currentTextBookStep = 'subjects';
+            const subjectsGrid = document.getElementById('subjects-grid');
+            subjectsGrid.className = "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-5xl mx-auto";
+            subjectsGrid.innerHTML = '';
+            document.getElementById('subject-section-title').innerText = `${selectedGrade} Text Books`;
+
+            const subjects = ['Maths', 'Physics', 'Chemistry', 'Biology'];
+            
+            subjects.forEach(sub => {
+                const docKey = `${selectedGrade}_${sub}`.replace(/\s+/g, '_');
+                const coverUrl = defaultCovers[docKey] || '';
+
+                const div = document.createElement('div');
+                div.className = "golden-card-outline rounded-xl p-2 flex flex-col justify-between a4-card relative overflow-hidden group cursor-pointer shadow-xl";
+                
+                div.innerHTML = `
+                    <div class="relative w-full h-full rounded-lg overflow-hidden flex flex-col justify-between">
+                        <img src="${coverUrl}" class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-300">
+                        <div class="absolute bottom-0 inset-x-0 bg-darkerblue/90 p-2 text-center border-t border-gold/40">
+                            <h4 class="font-bold text-gold text-sm uppercase">${sub}</h4>
+                        </div>
+                    </div>
+                `;
+
+                div.onclick = () => openTextBookDirectPDF(selectedGrade, sub);
+                subjectsGrid.appendChild(div);
+            });
+            window.showSection('section-subjects');
+        };
+
+        window.openTextBookDirectPDF = function(grade, subject) {
+            selectedSubject = subject;
+            const foundPDF = globalContent.find(item => item.grade === grade && item.subject === subject && item.type === 'pdf');
+            
+            if (foundPDF) {
+                openViewer(foundPDF);
+            } else {
+                openViewer({
+                    title: `${grade} ${subject} Textbook`,
+                    grade: grade,
+                    subject: subject,
+                    type: 'pdf',
+                    fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+                });
+            }
+        };
+
+        window.renderExtremeBookSection = function() {
+            const subjectsGrid = document.getElementById('subjects-grid');
+            subjectsGrid.className = "grid grid-cols-1 gap-6 w-full max-w-md mx-auto";
+            subjectsGrid.innerHTML = '';
+            document.getElementById('subject-section-title').innerText = `Extreme Book Series`;
+            
+            const div = document.createElement('div');
+            div.className = "golden-card-outline rounded-2xl p-8 flex items-center justify-center h-32 mx-auto max-w-md w-full";
+            div.innerHTML = `<h3 class="text-2xl font-bold">Grade 11 and 12</h3>`;
+            div.onclick = () => selectExtremeBookSubject();
+            subjectsGrid.appendChild(div);
+            window.showSection('section-subjects');
+        };
+
+        window.selectExtremeBookSubject = function() {
+            selectedSubject = 'Grade 11 and 12';
+            selectedYear = '';
+            document.getElementById('content-display-title').innerText = `Extreme Book Series • Grade 11 and 12`;
+            renderContentList();
+            window.showSection('section-content');
+        };
+
+        window.renderModelExamSubjectsSection = function() {
+            const subjectsGrid = document.getElementById('subjects-grid');
+            subjectsGrid.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-4xl mx-auto";
+            subjectsGrid.innerHTML = '';
+            document.getElementById('subject-section-title').innerText = `Model Exams - Select Subject`;
+            
+            const subjects = ['Maths', 'Physics', 'Chemistry', 'Biology', 'SAT', 'English'];
+            subjects.forEach(sub => {
+                const div = document.createElement('div');
+                div.className = "golden-card-outline rounded-2xl p-8 flex items-center justify-center h-32";
+                div.innerHTML = `<h3 class="text-2xl font-bold">${sub}</h3>`;
+                div.onclick = () => selectModelExamSubject(sub);
+                subjectsGrid.appendChild(div);
+            });
+            window.showSection('section-subjects');
+        };
+
+        window.selectModelExamSubject = function(subject) {
+            selectedSubject = subject;
+            selectedYear = '';
+            document.getElementById('content-display-title').innerText = `Model Exams • ${selectedSubject}`;
+            renderContentList();
+            window.showSection('section-content');
+        };
+
+        window.renderEUEESubjectsSection = function() {
+            const subjectsGrid = document.getElementById('subjects-grid');
+            subjectsGrid.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-4xl mx-auto";
+            subjectsGrid.innerHTML = '';
+            document.getElementById('subject-section-title').innerText = `EUEE - Select Subject`;
+            
+            const subjects = ['Maths', 'Physics', 'Chemistry', 'Biology', 'SAT', 'English'];
+            subjects.forEach(sub => {
+                const div = document.createElement('div');
+                div.className = "golden-card-outline rounded-2xl p-8 flex items-center justify-center h-32";
+                div.innerHTML = `<h3 class="text-2xl font-bold">${sub}</h3>`;
+                div.onclick = () => selectEUEESubject(sub);
+                subjectsGrid.appendChild(div);
+            });
+            window.showSection('section-subjects');
+        };
+
+        window.selectEUEESubject = function(subject) {
+            selectedSubject = subject;
+            selectedYear = '';
+            document.getElementById('content-display-title').innerText = `EUEE • ${selectedSubject}`;
+            renderContentList();
+            window.showSection('section-content');
+        };
+
+        window.renderPilotSubjectsSection = function() {
+            const subjectsGrid = document.getElementById('subjects-grid');
+            subjectsGrid.className = "grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl mx-auto";
+            subjectsGrid.innerHTML = '';
+            document.getElementById('subject-section-title').innerText = `Pilot Test - Select Subject`;
+            
+            const subjects = ['Maths', 'Physics', 'Biology'];
+            subjects.forEach(sub => {
+                const div = document.createElement('div');
+                div.className = "golden-card-outline rounded-2xl p-8 flex items-center justify-center h-32";
+                div.innerHTML = `<h3 class="text-2xl font-bold">${sub}</h3>`;
+                div.onclick = () => selectPilotSubject(sub);
+                subjectsGrid.appendChild(div);
+            });
+            window.showSection('section-subjects');
+        };
+
+        window.selectPilotSubject = function(subject) {
+            selectedSubject = subject;
+            renderPilotYearsSection();
+        };
+
+        window.renderPilotYearsSection = function() {
+            const titleEl = document.getElementById('year-section-title');
+            titleEl.innerText = `Pilot Test (${selectedSubject}) - Select Year`;
+            const yearsGrid = document.getElementById('years-grid');
+            yearsGrid.innerHTML = '';
+
+            let years = [];
+            if (selectedSubject === 'Maths' || selectedSubject === 'Physics') years = ['2016'];
+            else if (selectedSubject === 'Biology') years = ['2016', '2017'];
+
+            years.forEach(year => {
+                const div = document.createElement('div');
+                div.className = "golden-card-outline rounded-2xl p-8 flex items-center justify-center h-32";
+                div.innerHTML = `<h3 class="text-2xl font-bold">${year}</h3>`;
+                div.onclick = () => selectPilotYear(year);
+                yearsGrid.appendChild(div);
+            });
+            window.showSection('section-years');
+        };
+
+        window.selectPilotYear = function(year) {
+            selectedYear = year;
+            document.getElementById('content-display-title').innerText = `Pilot Test (${selectedYear}) • ${selectedSubject}`;
+            renderContentList();
+            window.showSection('section-content');
+        };
+
+        window.selectVideoGrade = function(grade) {
+            selectedGrade = grade;
+            renderVideoSubjectsSection();
+        };
+
+        window.renderVideoSubjectsSection = function() {
+            const subjectsGrid = document.getElementById('subjects-grid');
+            subjectsGrid.className = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl mx-auto";
+            subjectsGrid.innerHTML = '';
+            document.getElementById('subject-section-title').innerText = `${selectedGrade} (Videos) - Select Subject`;
+
+            const subjects = ['Maths', 'Physics', 'Chemistry', 'Biology'];
+            subjects.forEach(sub => {
+                const div = document.createElement('div');
+                div.className = "golden-card-outline rounded-2xl p-8 flex items-center justify-center h-32";
+                div.innerHTML = `<h3 class="text-2xl font-bold">${sub}</h3>`;
+                div.onclick = () => selectVideoSubject(sub);
+                subjectsGrid.appendChild(div);
+            });
+            window.showSection('section-subjects');
+        };
+
+        window.selectVideoSubject = function(subject) {
+            selectedSubject = subject;
+            selectedYear = '';
+            document.getElementById('content-display-title').innerText = `${selectedGrade} • ${selectedSubject} (VIDEOS)`;
+            renderContentList();
+            window.showSection('section-content');
+        };
+
+        window.handleBackToPreviousFromSubjects = function() {
+            if (currentContentType === 'video') {
+                showGradesSection('video');
+                return;
+            }
+            if (currentPdfCategory === 'Text Books') {
+                if (currentTextBookStep === 'subjects') renderTextBookGradesSection();
+                else showGradesSection('pdf');
+            } else {
+                showGradesSection('pdf');
+            }
+        };
+
+        window.handleBackFromYears = function() {
+            if (currentPdfCategory === 'Pilot test') renderPilotSubjectsSection();
+            else showGradesSection('pdf');
+        };
+
+        window.handleBackFromContent = function() {
+            if (currentContentType === 'video') renderVideoSubjectsSection();
+            else if (currentPdfCategory === 'Text Books') renderTextBookSubjectsSection();
+            else if (currentPdfCategory === 'Extreme book series') showGradesSection('pdf');
+            else if (currentPdfCategory === 'EUEE') renderEUEESubjectsSection();
+            else if (currentPdfCategory === 'Model exams') renderModelExamSubjectsSection();
+            else if (currentPdfCategory === 'Pilot test') renderPilotYearsSection();
+            else showGradesSection('pdf');
+        };
+
+        window.toggleAdminGradeOptions = function() {
+            const grade = document.getElementById('admin-grade').value;
+            const yearWrapper = document.getElementById('admin-year-wrapper');
+            const subSelect = document.getElementById('admin-subject');
+            
+            yearWrapper.classList.add('hidden');
+
+            if (grade === 'Pilot test') {
+                yearWrapper.classList.remove('hidden');
+                subSelect.innerHTML = ['Maths', 'Physics', 'Biology'].map(s => `<option value="${s}">${s}</option>`).join('');
+            } else if (grade === 'EUEE' || grade === 'Model exams') {
+                subSelect.innerHTML = ['Maths', 'Physics', 'Chemistry', 'Biology', 'SAT', 'English'].map(s => `<option value="${s}">${s}</option>`).join('');
+            } else if (grade === 'Extreme book series') {
+                subSelect.innerHTML = `<option value="Grade 11 and 12">Grade 11 and 12</option>`;
+            } else {
+                subSelect.innerHTML = ['Maths', 'Physics', 'Chemistry', 'Biology', 'English', 'SAT'].map(s => `<option value="${s}">${s}</option>`).join('');
+            }
+        };
+
+        window.toggleFavorite = function(id) {
+            let favs = JSON.parse(localStorage.getItem('rann_favorites') || '[]');
+            if (favs.includes(id)) favs = favs.filter(favId => favId !== id);
+            else favs.push(id);
+            localStorage.setItem('rann_favorites', JSON.stringify(favs));
+            if (selectedGrade && selectedSubject) renderContentList();
+            if (!document.getElementById('section-favorites').classList.contains('hidden')) showFavoritesSection();
+        };
+
+        window.showFavoritesSection = function() {
+            const favList = document.getElementById('favorites-list');
+            favList.innerHTML = '';
+            const favs = JSON.parse(localStorage.getItem('rann_favorites') || '[]');
+            const filtered = globalContent.filter(item => favs.includes(item.id));
+
+            if (filtered.length === 0) {
+                favList.innerHTML = `<p class="col-span-2 text-center text-gold/70 py-8 uppercase tracking-wider font-semibold">feature coming soon</p>`;
+                window.showSection('section-favorites');
+                return;
+            }
+
+            filtered.forEach(item => {
+                favList.appendChild(createContentCard(item));
+            });
+            window.showSection('section-favorites');
+        };
+
+        function createContentCard(item) {
+            const card = document.createElement('div');
+            card.className = "bg-darkerblue border border-gold/50 rounded-xl p-5 shadow-md flex flex-col justify-between relative hover:border-brightgold transition-all";
+            const favs = JSON.parse(localStorage.getItem('rann_favorites') || '[]');
+            const isFav = favs.includes(item.id);
+            const favIconClass = isFav ? "fa-solid text-gold" : "fa-regular text-gold/60";
+
+            let viewBtnText = item.type === 'pdf' ? 'view pdf' : 'Watch video';
+            let iconClass = item.type === 'pdf' ? 'fa-file-pdf' : 'fa-video';
+            
+            card.innerHTML = `
+                <div>
+                    <div class="flex justify-between items-start">
+                        <h4 class="text-lg font-bold text-gold pr-8">${item.title}</h4>
+                        <button onclick="toggleFavorite('${item.id}')" class="absolute top-5 right-5 text-xl hover:scale-125 transition-transform">
+                            <i class="${favIconClass} fa-bookmark"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gold/60 mt-1">${item.grade}${item.year ? ` (${item.year})` : ''} • ${item.subject} • ${item.type.toUpperCase()}</p>
+                    <p class="text-xs text-brightgold mt-1"><i class="fa-solid fa-eye mr-1"></i> Views: ${item.views || 0}</p>
+                </div>
+                <button class="btn-gold text-center w-full py-2 px-4 rounded-lg block mt-4 uppercase text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid ${iconClass}"></i> ${viewBtnText}
+                </button>
+            `;
+
+            card.querySelector('button.btn-gold').onclick = () => openViewer(item);
+            return card;
+        }
+
+        function renderContentList() {
+            const listContainer = document.getElementById('content-list');
+            listContainer.innerHTML = '';
+
+            const filtered = globalContent.filter(item => {
+                if (item.grade !== selectedGrade || item.subject !== selectedSubject || item.type !== currentContentType) return false;
+                if (selectedYear && item.year !== selectedYear) return false;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `<p class="col-span-2 text-center text-gold/70 py-12 text-lg uppercase tracking-wider font-semibold">feature coming soon</p>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                listContainer.appendChild(createContentCard(item));
+            });
+        }
+
+        window.openSearchModal = function() {
+            document.getElementById('search-modal').classList.remove('hidden');
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results-list').innerHTML = `<p class="text-center text-gold/60 py-6">Type above to search all academy materials instantly.</p>`;
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeSearchModal = function() {
+            document.getElementById('search-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        };
+
+        function renderAdminManageList() {
+            const tbody = document.getElementById('admin-manage-list');
+            tbody.innerHTML = '';
+
+            if (globalContent.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-gold/60">No materials uploaded yet.</td></tr>`;
+                return;
+            }
+
+            const sorted = [...globalContent].sort((a, b) => b.createdAt - a.createdAt);
+
+            sorted.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gold/20 hover:bg-gold/5 transition-colors";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-semibold">${item.title}</td>
+                    <td class="py-3 px-4 text-sm">${item.grade}</td>
+                    <td class="py-3 px-4 text-sm">${item.subject}</td>
+                    <td class="py-3 px-4 text-center">
+                        <button onclick="deleteResource('${item.id}')" class="text-red-400 hover:text-red-600 transition-colors font-bold px-3 py-1 border border-red-500/30 rounded bg-red-900/20">
+                            <i class="fa-solid fa-trash mr-1"></i> Delete
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.deleteResource = async function(docId) {
+            const confirmDelete = confirm("⚠️ ARE YOU SURE?\n\nThis will remove the resource from the academy.");
+            if (!confirmDelete) return;
+
+            try {
+                await deleteDoc(doc(db, "rann_content", docId));
+                alert("✅ Resource successfully deleted!");
+            } catch (error) {
+                console.error(error);
+                alert("❌ Failed to delete: " + error.message);
+            }
+        };
+
+        document.getElementById('admin-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('admin-title').value;
+            const type = document.getElementById('admin-type').value;
+            const grade = document.getElementById('admin-grade').value;
+            const year = (grade === 'Pilot test') ? document.getElementById('admin-year').value : '';
+            const subject = document.getElementById('admin-subject').value;
+            const fileUrl = document.getElementById('admin-file-url').value.trim();
+
+            if (!fileUrl) {
+                alert("Please paste a valid file URL.");
+                return;
+            }
+
+            const uploadBtn = document.getElementById('upload-btn');
+            uploadBtn.disabled = true;
+            uploadBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            uploadBtn.innerText = "Publishing...";
+
+            try {
+                let payload = {
+                    title, 
+                    type, 
+                    grade, 
+                    subject, 
+                    fileUrl, 
+                    views: 0,
+                    createdAt: Date.now()
+                };
+                if (year) payload.year = year;
+
+                await addDoc(collection(db, "rann_content"), payload);
+
+                alert('✅ Resource successfully published!');
+                document.getElementById('admin-form').reset();
+                toggleAdminGradeOptions();
+
+            } catch (dbError) {
+                console.error("Firestore Save Error:", dbError);
+                alert("❌ Failed to save to database: " + dbError.message);
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                uploadBtn.innerText = "Publish Resource";
+            }
+        });
+    </script>
+</body>
+</html>
